@@ -1,0 +1,49 @@
+{
+  "project": "RetailPulse",
+  "synthetic": true,
+  "seed": 20261010,
+  "date_range": [
+    "2024-01-01",
+    "2026-09-30"
+  ],
+  "counts": {
+    "stores": 52,
+    "warehouses": 6,
+    "customers": 12500,
+    "products": 2500,
+    "orders": 200000,
+    "payments": 209952,
+    "shipments": 183454,
+    "returns": 14102,
+    "order_items": 470938,
+    "inventory_movements": 250000,
+    "support_tickets": 9000,
+    "supplier_prices": 18000,
+    "web_events": 400000
+  },
+  "order_status_distribution": {
+    "cancelled": 16008,
+    "returned": 12051,
+    "delivered": 170783,
+    "shipped": 620,
+    "processing": 538
+  },
+  "order_channel_distribution": {
+    "web": 101931,
+    "mobile": 63816,
+    "store": 34253
+  },
+  "purpose": "Simulated upstream sources; not a warehouse or transformed dataset.",
+  "quality_cases": [
+    "missing and duplicate customer emails",
+    "multiple payment attempts",
+    "cancellations",
+    "late shipments",
+    "returns",
+    "duplicate web event IDs",
+    "invalid supplier prices",
+    "duplicated supplier event IDs",
+    "unexpected supplier currency",
+    "nullable event identities"
+  ]
+}

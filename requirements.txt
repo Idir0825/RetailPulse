@@ -1,0 +1,2 @@
+# No external Python dependencies required for bootstrap (stdlib only).
+# Future pipeline requirements are to be chosen and justified by the learner.
