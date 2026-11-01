@@ -1,33 +1,35 @@
-# Local credentials and configuration
+# Local-only configuration and secrets
 .env
 .env.*
 !.env.example
 
-# Local tooling and caches
+# Python virtual environments and caches
 .venv/
 venv/
-.idea/
-.vscode/
 __pycache__/
+*.py[cod]
 .pytest_cache/
 .mypy_cache/
 .ruff_cache/
 .coverage
 htmlcov/
-*.py[cod]
 
-# Generated data: rebuild with src/simulator/generate.py
+# IDE and OS artifacts
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+
+# Reproducible generated fixtures (manifest is tracked)
 /data/seed/*.csv
 /data/external/*.csv
 /data/external/*.jsonl
-# data/manifest.json intentionally versioned: small, useful dataset metadata.
 
-# Runtime artifacts
+# Runtime and build artifacts
 *.log
 *.tmp
 *.sqlite3
 *.db
-/docs/assets/images/ticket_2/*.zip
 /dist/
 /build/
 *.egg-info/

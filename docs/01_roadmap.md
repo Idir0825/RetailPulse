@@ -1,44 +1,34 @@
-# RetailPulse — Feature roadmap
+# RetailPulse — Development roadmap
 
-> Indicative delivery sequence, driven by product needs and reviewed ticket by ticket. Dates and tools are **not commitments**.
+This is a **living milestone plan**, not a list of mandatory tickets or a fixed teaching schedule. Each step exists because it creates a usable capability. The next step is chosen when the preceding work and current constraints are understood.
 
-## Delivery status
+## Current implementation boundary
 
-| Ticket / milestone | Scope | Status |
-|---|---|---|
-| TICKET-001 | Operational source bootstrap | **Completed** |
-| TICKET-002 | Initial source-quality baseline | **In review — changes requested** |
-| Next feature (ticket to be created) | Supplier price import from CSV | Planned |
+- A deterministic generator creates synthetic PostgreSQL, supplier CSV, and JSONL source datasets.
+- Docker Compose and the bootstrap loader can initialize the PostgreSQL `source` schema.
+- The initial Git baseline is established.
+- **Not yet implemented:** RetailPulse's application importer, application-managed persistence, API, frontend, job history, automated product tests, or GCP deployment.
 
-**Remaining work on TICKET-002:** correct SQL sections A3 (all channel violations), B2 (nonempty normalized email groups and count), and C3 (stable ordered top five); make labels valid SQL comments and qualify `source.*` references. Preserve the author's work; do not close this ticket prematurely.
+The earlier SQL profiling exercise has been retired as a delivery requirement. Historical work can remain in Git history; there is **no open ticket to close** before product development starts.
 
-## Planned product milestones
+## Product milestones
 
-| Sequence | User problem / outcome | Candidate engineering work | Evidence of completion |
+| Phase | User-visible outcome | Engineering work driven by the need | Evidence |
 |---|---|---|---|
-| 1. Supplier updates | Catalog staff can import supplier prices without manual database edits | Python CLI/service, schema validation, persistence, transactions | Import works, errors are actionable, repeat imports are safe |
-| 2. Reliable operations | Operators can diagnose and replay failed imports | Idempotency, batch tracking, logging, quarantined records, unit/integration tests | Failed runs do not corrupt data; results are reproducible |
-| 3. Programmatic access | Internal applications can access supported RetailPulse data | REST API, contracts, pagination, service boundaries, API tests | Documented endpoints with stable behavior |
-| 4. Multi-source processing | New source data can be integrated on a recurring basis | Incremental extraction, transformations, scheduling, data quality, SQL | Automated runs with measurable success/failure and recovery |
-| 5. Operator interface | People can operate RetailPulse without a terminal | Frontend consuming the API; import status, errors, stock/product views | End-to-end workflows from a browser |
-| 6. Deployment and reliability | The system can be deployed and operated consistently | Docker, CI/CD, secrets, targeted GCP components, metrics, recovery | Repeatable deployment, tests, observability |
-| 7. Advanced capabilities | Improve a real operational bottleneck | Algorithmic inventory/reorder suggestion, profiling/optimization, optional ML | Baseline comparison and explicit evaluation of benefit |
+| 1. Supplier import | A catalog operator can submit supplier cost updates via CLI. | Python application entry point, input contracts, database persistence, focused tests. | Import succeeds; invalid input is reported; reruns behave safely. |
+| 2. Operational reliability | An operator can inspect, understand, and retry processing runs. | Execution metadata, transaction boundaries, structured logging, failure recovery, integration tests. | Demonstrable success, rejection, and crash/retry scenarios. |
+| 3. Backend access | Internal software can query products, supplier updates, and job results. | REST API, service boundaries, pagination, error contracts, API tests. | Documented, repeatable HTTP interactions. |
+| 4. Cross-source processing | Supported records from operational sources can be synchronized. | Incremental extraction, change handling, validated transformations, scheduling when justified. | Recoverable repeated processing with measured results. |
+| 5. Operator frontend | Staff can use important workflows from a browser. | Frontend connected to the API, navigation, loading/error states, end-to-end tests. | Import and inspection workflows work without a terminal. |
+| 6. Deployment and operations | The application can be deployed and observed reliably. | CI/CD, containers, configuration/secrets, targeted GCP services, health and monitoring. | Reproducible deployment and actionable diagnostics. |
+| 7. Applied optimization | A genuine operational bottleneck is improved. | Algorithm profiling, rule-based baseline, optional NumPy/ML where beneficial. | Measured improvement against a documented baseline. |
 
-Milestones can overlap, and testing/documentation/Git discipline apply from the beginning rather than at the end.
+The order can change when dependencies or product value warrant it. Testing, documentation, version control, and architecture discussions accompany **every phase**, not just the last.
 
-## Technical direction
+## Next development move
 
-- **Python software engineering:** modularity, appropriate OO design, clear boundaries, tests and maintenance.
-- **Data/cloud:** PostgreSQL, ingestion, incremental processing, data quality and justified GCP use.
-- **System design:** requirements, separation of concerns, scaling and trade-off documentation.
-- **Algorithms:** performance and applied optimization only when there is a real problem to solve.
-- **Frontend:** planned after a usable backend contract; technology chosen at the time (web UI is a candidate, not an implemented feature).
+**Start the supplier cost import capability.** Before implementation, agree on the expected command-line behavior and minimum database contract, particularly deduplication, invalid records, and source-versus-owned tables. Implement the smallest useful vertical slice, add tests, review, and commit/push at meaningful checkpoints.
 
-The backend should initially remain a **well-structured monolith** unless concrete constraints justify splitting it up.
+## Technology selection rule
 
-## Next actions
-
-1. Finish and review TICKET-002.
-2. Record a coherent initial repository commit/push (or the first documentation baseline commit if bootstrap is already committed).
-3. Create the first product feature ticket around importing supplier pricing data.
-4. Review the proposed design **before** an implementation when interfaces or schema changes have meaningful consequences.
+Use the simplest tool that solves the current need. Python, PostgreSQL, and Docker are the present foundation. FastAPI, React/TypeScript, GCP, and additional data/analytics tooling are **planned directions**, not functionality claimed as complete. Avoid microservices or distributed frameworks without evidence of need.

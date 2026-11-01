@@ -1,69 +1,54 @@
 # RetailPulse — Engineering workflow
 
-## Ticket contract
+RetailPulse is developed as **one evolving product**, without educational tickets or a mandatory exercise queue. An implementation begins with the next useful user-facing behavior, not with a technology to practice.
 
-Each ticket describes a **user/operator need**, not a technology to practice. It should contain:
+## Working together
 
-- Actor and problem, with real context for RetailPulse.
-- Observable behavior, inputs/outputs and edge cases.
-- Constraints and out-of-scope boundaries.
-- Acceptance criteria that can be demonstrated or tested.
-- Expected deliverables, dependencies and review handoff.
+1. **Choose the next useful outcome.** Describe what an operator, internal client, or component needs to do and how success will be observed.
+2. **Think before coding when necessary.** Propose the design and identify uncertainties; ask for a review when interfaces, data models, or reliability choices matter.
+3. **Build independently.** Official docs, Internet research, examples, and relevant courses are allowed. Ask for progressive hints and diagnosis rather than a prewritten solution.
+4. **Verify behavior.** Run the application, check failure cases, write focused unit/integration tests, and capture relevant outputs.
+5. **Review and improve.** Share code, errors, test results, and trade-offs; apply technical feedback before merging.
+6. **Move forward.** Ask for the next milestone only when appropriate; there is no obligation to work every day or follow a rigid timetable.
 
-The assignee chooses the design. Do not insert a step-by-step solution into a product ticket. When an important design decision exists, discuss alternatives **before implementation** and document the trade-off. Research and official documentation are permitted.
+The learning target is approximately **85% hands-on problem solving / 15% contextual theory**. Long-term areas: Python/software engineering (35%), data/cloud (30%), architecture/system design (20%), algorithms/applied AI (15%). These are priorities, **not ticket quotas** or reasons to add technology without product value.
 
 ## Definition of done
 
-- The agreed acceptance criteria are demonstrated.
-- Expected failure behavior has been checked.
-- Automated tests cover meaningful logic when applicable.
-- Relevant documentation and configuration examples are updated.
-- No secrets or generated datasets are staged for Git.
-- Review feedback is resolved and the delivery is reproducible.
+A meaningful unit of work is complete when its expected behavior is demonstrated, relevant negative cases are tested, documentation/configuration is current, review notes are addressed, and changes can be reproduced without personal environment state.
 
-A ticket remains **In review** if corrections are requested, even if most work is finished.
+## Git/GitHub workflow
 
-## Git and GitHub cadence
+- **Branch:** create a descriptive branch from a reasonably clean `main` for a cohesive product change, e.g. `feature/supplier-import` or `docs/product-spec`.
+- **Commit:** record a logically coherent change after it works or at a useful checkpoint (e.g. `feat: add supplier import entrypoint`, `test: cover malformed cost rows`). A commit is not required after each tiny edit.
+- **Push:** push work regularly, especially when finishing a session, backing up substantial changes, or requesting review. Pushing does not mean merging.
+- **Pull request:** open a PR when the feature is reviewable and its success criteria can be demonstrated. Update it after review.
+- **Merge:** integrate into `main` only after relevant validation. Keep `main` usable.
 
-- **Commit** after a cohesive, reviewable change (e.g., add importer CLI, implement validation, add associated tests, fix a documented bug). Work-in-progress commits on a branch are acceptable if clearly labeled.
-- **Push** the current branch after meaningful progress, at the end of a development session, or before requesting review; do not wait until the entire project is finished.
-- **Pull request / review** once a ticket's acceptance criteria can be demonstrated. Revise and push again if feedback requires changes.
-- **Merge** into `main` only after review/validation. Keep `main` reasonably stable.
-- For small bootstrap fixes, a simple direct commit may be sufficient; adopt feature branches as product work begins.
-
-Suggested branch names: `feature/ticket-003-supplier-import`, `fix/ticket-002-quality-sql`.
-
-Suggested conventional commit examples:
-
-```text
-chore: bootstrap local PostgreSQL sources
-docs: define RetailPulse product roadmap
-fix: complete source quality checks for ticket 002
-feat: import supplier price updates
-test: cover invalid supplier records
-```
-
-Before staging and pushing:
+Useful PowerShell checks:
 
 ```powershell
 git status
 git diff
-git add <specific-files>
-git diff --cached --stat
 git diff --cached
-# Inspect staged content before committing
-git commit -m "<type>: <short description>"
-git push
+git log -3 --oneline
 ```
 
-Never stage `.env`, `.venv`, `.idea`, generated CSV/JSONL, or credentials. `data/manifest.json` is small metadata and is deliberately versioned.
+For new feature work, typically:
 
-## Collaboration sequence
+```powershell
+git switch main
+git pull --ff-only
+git switch -c feature/supplier-import
+# implement, test, review
+git add <selected-paths>
+git diff --cached
+git commit -m "feat: implement supplier cost import"
+git push -u origin feature/supplier-import
+```
 
-1. Read the ticket and clarify essential contract ambiguities.
-2. Propose design when needed; receive critique of the approach, not a prewritten implementation.
-3. Implement with documentation available; test locally.
-4. Send code, commands, test outputs and trade-offs for review.
-5. Apply review notes, commit/push at an appropriate checkpoint, and close the ticket.
+These are **illustrative commands**, not a request to commit a feature before it exists. The assistant should explain the right commit/push moment based on the actual changes and state. Never commit `.env`, `.venv`, IDE files, real credentials, or large generated fixtures.
 
-**Initial backlog state:** TICKET-001 is completed. TICKET-002 is still in review and needs specific SQL fixes; do not silently replace the author's draft with a completed solution.
+## Notes on historical work
+
+The former ticket-based workflow has been discontinued. Removed ticket artifacts need not be recreated or finished. The initial Git commit remains part of repository history; historical branch names may remain in Git without being relevant to current work.
